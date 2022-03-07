@@ -40,14 +40,15 @@ Hit the Command button an morse letter:
 
 ## simpel HF tranceiver 
 On rp2040 pin toggle with 7.xxx xxx MHz 
-'''
+
+```
 simpel code
 def tx_toggle():
         wrap_target()
         set(pins, 1) [1]
         set(pins, 0) [1]
         wrap()
-'''
+```
 you can receive the cw signal on qrg:
 | Freq                         |
 | -----------------------------|
