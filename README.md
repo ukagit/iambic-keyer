@@ -16,27 +16,29 @@ now `pcb` board simple soldering connectors on rp2040, and or assembly it a box
 ## Features
 
 Command
-a -> Iambic Mode A
-b -> Iambic Mode B
-m -> request Iambic Mode A/B
+* a -> Iambic Mode A
+* b -> Iambic Mode B
+* m -> request Iambic Mode A/B
 
-? -> request value of ...
+* ? -> request value of ...
 
-i -> TX_opt enable(on) disable(off)
-j -> TX_transceiver enable(on) disable(off)
-o -> Sidetone toggle (on) (off)
+* i -> TX_opt enable(on) disable(off)
+* j -> TX_transceiver enable(on) disable(off)
+* o -> Sidetone toggle (on) (off)
 
-f -> adjust sidetone frequenz
-v -> adjust sidetone volume 1-100
-q -> adjust qrg of tx
-w -> adjust WPM (Word per minute)
+* f -> adjust sidetone frequenz
+* v -> adjust sidetone volume 1-100
+* q -> adjust qrg of tx
+* w -> adjust WPM (Word per minute)
 
-t -> tune mode, end with command mode
-s -> save parameter to  file
+* t -> tune mode, end with command mode
+* s -> save parameter to  file
 
-x -> exit Command mode
+* x -> exit Command mode
 
-simpel tranceiver is toggle pin of rp2040
+## simpel HF tranceiver 
+toggle pin of rp2040
+
 simpel code
 def tx_toggle():
         wrap_target()
@@ -45,11 +47,11 @@ def tx_toggle():
         wrap()
 
 you can receive the cw signal on qrg:
-.... 7029870
-.... 7023700
-.... 7017540
-.... 7011390
-.... 7005250
+* .... 7029870
+* .... 7023700
+* .... 7017540
+* .... 7011390
+* .... 7005250
  
 
 ## Software Installation
@@ -66,15 +68,15 @@ you can receive the cw signal on qrg:
 
 ## Configuration
 Main Paramter are setup in json file.
-"{
-\"txt_emable\": 0,
-\"sidetone_volume\": 10,
-\"sidetone_freq\": 700,
-\"sidetone_enable\":1,
-\"tx_enamble\": 0,
-\"iambic_mode\": 16,
-\"wpm\": 18
-}"
+* "{
+* \"txt_emable\": 0,
+* \"sidetone_volume\": 10,
+* \"sidetone_freq\": 700,
+* \"sidetone_enable\":1,
+* \"tx_enamble\": 0,
+* \"iambic_mode\": 16,
+* \"wpm\": 18
+* }"
 
 ## Pinout
 
