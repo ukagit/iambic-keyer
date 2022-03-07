@@ -40,14 +40,14 @@ Hit the Command button an morse letter:
 
 ## simpel HF tranceiver 
 On rp2040 pin toggle with 7.xxx xxx MHz 
-
+'''
 simpel code
 def tx_toggle():
         wrap_target()
         set(pins, 1) [1]
         set(pins, 0) [1]
         wrap()
-
+'''
 you can receive the cw signal on qrg:
 | Freq                         |
 | -----------------------------|
@@ -85,7 +85,7 @@ Main Paramter are setup in json file.
 ## Pinout
 
 Setup Hardware pin on rp2040
-
+'''
 comand_button    = 15 
 onboard_led      = 25 
 extern_led       = 3 
@@ -95,7 +95,7 @@ tx_pin           = 18
 cw_sound_pin     = 22
 paddle_left_pin  = 17 
 paddle_right_pin = 18
-
+'''
 
 ## Schematic
 
