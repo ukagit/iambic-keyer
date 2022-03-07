@@ -5,23 +5,20 @@ IAMBIC keyer in micropython
 * command function over keyer 
 * Transmit by sound (headphone)
 * Transmit by LED
-* Transmit by Optocopler
-* Transmit by HF -> tranceiver on board  
+* Transmit by optocoupler
+* Transmit by HF -> transceiver on board  
 
 ![schematic](./IMG_1636.png)
 
-It is a minimalist device based on:
+It is a minimalist device based on the micropython `code`  installed on rp2040 with Thonny Tool.
 
-The micropython `code`  installed on rp2040 with Thonny Tool.
-
-Now `pcb` board, simple soldering connectors direct on rp2040, and or assembly it a box
+No `pcb` board, simply solder connectors directly on rp2040, and/or assemble it in a box
 
 ## Features
 
 Command
 
-Hit the Command button an morse letter:
-Definition is copy from kn3g keyer, i use the keyer the last 5 year. 
+Hit the command button and use a morse letter. The definition is copy from kn3g keyer, which I have been using for 5 years 
 
 * a -> Iambic Mode A
 * b -> Iambic Mode B
@@ -33,21 +30,21 @@ Definition is copy from kn3g keyer, i use the keyer the last 5 year.
 * j -> TX_transceiver enable(on) disable(off)
 * o -> Sidetone toggle (on) (off)
 
-* f -> adjust sidetone frequenz
+* f -> adjust sidetone frequency
 * v -> adjust sidetone volume 1-100
 * q -> adjust qrg of tx
-* w -> adjust WPM (Word per minute)
+* w -> adjust WPM (words per minute)
 
 * t -> tune mode, end with command mode
 * s -> save parameter to  file
 
-* x -> exit Command mode
+* x -> exit command mode
 
-## simpel HF tranceiver
+## simple HF transceiver
 On rp2040 pin toggle with 7.xxx xxx MHz 
 
 ```
-simpel code
+simple code
 def tx_toggle():
         wrap_target()
         set(pins, 1) [1]
@@ -71,15 +68,15 @@ https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/2
 2. connect to a Raspberry Pi Pico on USB
 3. copy imabic_keyer_rp2040.py and json_iambic.json to rp2040
 4. open the file imabic_keyer_rp2040.py and test the keyer
-5. when all ok save the program as main.py
+5. when everything works as intended, save the program as main.py
 
-6. is the  json file wrong, you can start in factormode, press command-button at boot time.
+6. if the  json file is wrong, you can start in factorymode (hold command button while booting)
 
 
 
 ## Configuration
-Main Parameter are setup in json file.
-You can change the parameter in command mode of the keyer, or edit the json.txt file.  
+Main parameters are set up in json file.
+You can change the parameters in command mode of the keyer, or edit the json.txt file.  
 ```
  "{
  \"txt_emable\": 0,
@@ -113,8 +110,8 @@ paddle_right_pin = 18
 KIS -> keep it simple
 
 * J2 2.5mm  jack (for keyer, headphone)
-* optocoupler for Tranceiver connect
-* Button for commandmode
+* optocoupler for connecting the transceiver
+* button for command mode
 * option for external command led
 
 ## Future
@@ -129,4 +126,3 @@ Some Ideas / options on demand:
 * MarkWoodworth xiaokey (https://github.com/MarkWoodworth/xiaokey)
 * Cornell University ECE4760 RP2040 testing http://people.ece.cornell.edu/land/courses/ece4760/RP2040/index_rp2040_testing.html 
 * Iambic Morse Code Keyer Sketch Copyright (c) 2009 Steven T. Elliott https://github.com/sergev/vak-opensource/blob/master/hamradio/arduino-keyer.c
-
