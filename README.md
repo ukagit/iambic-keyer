@@ -73,20 +73,21 @@ you can receive the cw signal on qrg:
 
 ## Configuration
 Main Paramter are setup in json file.
-* "{
-* \"txt_emable\": 0,
-* \"sidetone_volume\": 10,
-* \"sidetone_freq\": 700,
-* \"sidetone_enable\":1,
-* \"tx_enamble\": 0,
-* \"iambic_mode\": 16,
-* \"wpm\": 18
-* }"
-
+```
+ "{
+ \"txt_emable\": 0,
+ \"sidetone_volume\": 10,
+ \"sidetone_freq\": 700,
+ \"sidetone_enable\":1,
+ \"tx_enamble\": 0,
+ \"iambic_mode\": 16,
+ \"wpm\": 18
+}"
+```
 ## Pinout
 
 Setup Hardware pin on rp2040
-'''
+```
 comand_button    = 15 
 onboard_led      = 25 
 extern_led       = 3 
@@ -96,7 +97,7 @@ tx_pin           = 18
 cw_sound_pin     = 22
 paddle_left_pin  = 17 
 paddle_right_pin = 18
-'''
+```
 
 ## Schematic
 
