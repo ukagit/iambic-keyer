@@ -127,6 +127,6 @@ Some Ideas / options on demand:
 ## References
 
 * MarkWoodworth xiaokey (https://github.com/MarkWoodworth/xiaokey)
-* Cornell University ECE4760 RP2040 testing ttp://people.ece.cornell.edu/land/courses/ece4760/RP2040/index_rp2040_testing.html 
-* Iambic Morse Code Keyer Sketch Copyright (c) 2009 Steven T. Elliott
+* Cornell University ECE4760 RP2040 testing http://people.ece.cornell.edu/land/courses/ece4760/RP2040/index_rp2040_testing.html 
+* Iambic Morse Code Keyer Sketch Copyright (c) 2009 Steven T. Elliott https://github.com/sergev/vak-opensource/blob/master/hamradio/arduino-keyer.c
 
