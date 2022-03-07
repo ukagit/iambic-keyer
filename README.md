@@ -16,6 +16,8 @@ now `pcb` board simple soldering connectors on rp2040, and or assembly it a box
 ## Features
 
 Command
+Hit the Command button an morse letter:
+
 * a -> Iambic Mode A
 * b -> Iambic Mode B
 * m -> request Iambic Mode A/B
@@ -37,7 +39,7 @@ Command
 * x -> exit Command mode
 
 ## simpel HF tranceiver 
-toggle pin of rp2040
+On rp2040 pin toggle with 7.xxx xxx MHz 
 
 simpel code
 def tx_toggle():
@@ -47,11 +49,13 @@ def tx_toggle():
         wrap()
 
 you can receive the cw signal on qrg:
-* .... 7029870
-* .... 7023700
-* .... 7017540
-* .... 7011390
-* .... 7005250
+| Freq                         |
+| -----------------------------|
+| 7029870 |
+| 7023700 |
+| 7017540 |
+| 7011390 |
+| 7005250 |
  
 
 ## Software Installation
@@ -116,4 +120,4 @@ Some Ideas / obtions on demand:
 
 ## References
 
-MarkWoodworth xiaokey [Here](https://github.com/MarkWoodworth/xiaokey) 
+MarkWoodworth xiaokey (https://github.com/MarkWoodworth/xiaokey) 
