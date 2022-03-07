@@ -1,9 +1,12 @@
 # iambic keyer
 
-electronic iambic keyer
-
-with command funktion and request
-tranceiver on board  
+electronic iambic keyer micropython
+* Iambic Mode A/B
+* command function over keyer 
+* Transmit by sound (headphone)
+* Transmit by LED
+* Transmit by Optocopler
+* Transmit by HF -> tranceiver on board  
 
 ![schematic](./img/assembly.png)
 
@@ -61,13 +64,14 @@ you can receive the cw signal on qrg:
 
 ## Software Installation
 
-1. Install Thonny latest version.
-2. connect to a Raspberry Pi Pico
+1. Install Thonny on your PC/MAC 
+https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/2
+2. connect to a Raspberry Pi Pico on USB
 3. copy imabic_keyer_rp2040.py and json_iambic.json to rp2040
 4. open the file imabic_keyer_rp2040.py and test the keyer
 5. when all ok save the program as main.py
 
-6. is the  json file wrong, you an start in factor mode, press command-button at boot time.
+6. is the  json file wrong, you can start in factormode, press command-button at boot time.
 
 
 
