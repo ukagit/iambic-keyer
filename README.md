@@ -12,14 +12,16 @@ IAMBIC keyer in micropython
 
 It is a minimalist device based on:
 
-The `code` directory has the files to be installed on the *Seeed Xiao* device.
+The micropython `code`  installed on rp2040 with Thonny Tool.
 
-now `pcb` board simple soldering connectors on rp2040, and or assembly it a box
+Now `pcb` board, simple soldering connectors direct on rp2040, and or assembly it a box
 
 ## Features
 
 Command
+
 Hit the Command button an morse letter:
+Definition is copy from kn3g keyer, i use the keyer the last 5 year. 
 
 * a -> Iambic Mode A
 * b -> Iambic Mode B
@@ -41,7 +43,7 @@ Hit the Command button an morse letter:
 
 * x -> exit Command mode
 
-## simpel HF tranceiver 
+## simpel HF tranceiver
 On rp2040 pin toggle with 7.xxx xxx MHz 
 
 ```
@@ -76,7 +78,8 @@ https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/2
 
 
 ## Configuration
-Main Paramter are setup in json file.
+Main Parameter are setup in json file.
+You can change the parameter in command mode of the keyer, or edit the json.txt file.  
 ```
  "{
  \"txt_emable\": 0,
@@ -103,9 +106,6 @@ paddle_left_pin  = 17
 paddle_right_pin = 18
 ```
 
-## Schematic
-
-![schematic](./img/xiaokey.png)
 
 ## Assembly and Bill of Materials
 
@@ -114,16 +114,19 @@ KIS -> keep it simple
 
 * J2 2.5mm  jack (for keyer, headphone)
 * optocoupler for Tranceiver connect
-* Button for coammdnmode
-* option for externel coammnd led
+* Button for commandmode
+* option for external command led
 
 ## Future
 
-Some Ideas / obtions on demand:
+Some Ideas / options on demand:
 
 * power save mode
-* wpm conrol with potentiometer
+* wpm control with potentiometer
 
 ## References
 
-MarkWoodworth xiaokey (https://github.com/MarkWoodworth/xiaokey) 
+* MarkWoodworth xiaokey (https://github.com/MarkWoodworth/xiaokey)
+* Cornell University ECE4760 RP2040 testing ttp://people.ece.cornell.edu/land/courses/ece4760/RP2040/index_rp2040_testing.html 
+* Iambic Morse Code Keyer Sketch Copyright (c) 2009 Steven T. Elliott
+
