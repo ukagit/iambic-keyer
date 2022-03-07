@@ -1,6 +1,6 @@
 # iambic keyer
 
-electronic iambic keyer micropython
+IAMBIC keyer in micropython
 * Iambic Mode A/B
 * command function over keyer 
 * Transmit by sound (headphone)
@@ -8,7 +8,7 @@ electronic iambic keyer micropython
 * Transmit by Optocopler
 * Transmit by HF -> tranceiver on board  
 
-![schematic](./img/assembly.png)
+![schematic](./IMG_1636.png)
 
 It is a minimalist device based on:
 
