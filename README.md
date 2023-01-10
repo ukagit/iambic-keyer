@@ -9,6 +9,8 @@ IAMBIC keyer in micropython
 * Transmit by HF -> transceiver on board  
 
 ![schematic](./IMG_1636.png)
+profession Version :-)
+![schematic](./pico_keyer.png)
 
 It is a minimalist device based on the micropython `code`  installed on rp2040 with Thonny Tool.
 
