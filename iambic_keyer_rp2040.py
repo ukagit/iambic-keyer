@@ -1,6 +1,7 @@
-# Iambic keyer rp2040 include simple  transceiver on 40m 
+ # Iambic keyer rp2040 include simple  transceiver on 40m 
 #
 # Copyright (C) 2022 dl2dbg
+# update 12.3.2023 
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -84,8 +85,9 @@ class transceiver():
     # ttp://people.ece.cornell.edu/land/courses/ece4760/RP2040/index_rp2040_testing.html
     '''
 
-    def __init__(self,tx_pin):
-        self.tx_opt_pin = Pin(tx_pin,Pin.OUT)
+    def __init__(self):
+        #self.tx_opt_pin = Pin(tx_pin,Pin.OUT)
+        # Pin(2)) is HF out 
         
         
         self.freq = 7005250 # auf 40m fangen wir an
@@ -101,6 +103,7 @@ class transceiver():
         self.on_off = 1
     def off(self):
         self.on_off = 0
+        self.sm3.active(0)
         
 
     @asm_pio(set_init=PIO.OUT_LOW)
@@ -113,7 +116,8 @@ class transceiver():
         
     def osc(self):
         
-        self.sm3 = StateMachine(3, self.tx_toggle, freq= self.freq*4, set_base=Pin(2), jmp_pin=self.tx_opt_pin)
+        self.sm3 = StateMachine(3, self.tx_toggle, freq= self.freq*4, set_base=Pin(2))
+        # self.sm3 = StateMachine(3, self.tx_toggle, freq= self.freq*4, set_base=Pin(2), jmp_pin=self.tx_opt_pin)
         self.sm3.active(0)
         self.sm3.active(1)
         
@@ -126,6 +130,8 @@ class tx_opt():
     
     '''
     3.3.2022
+    
+    
     simple pin on/off for tx optocopler
     # 
     '''
@@ -135,16 +141,20 @@ class tx_opt():
         self.tx_opt_pin = Pin(tx_pin,Pin.OUT)
         self.on_off = 1
         
-        #self.tx_opt_pin = Pin(10, Pin.OUT)
+        #self._pin = Pin(10, Pin.OUT)
         
     def on(self):
         self.on_off = 1
     def off(self):
         self.on_off = 0
+       
         
     def send(self,state):
+        
         if self.on_off == 1:
             self.tx_opt_pin.value(state)
+            #print(".") #dl2dbg
+            #print(tx_pin)
         
     
     
@@ -163,7 +173,7 @@ class command_button():
         
         self.button_save = 0
         self.btimer = 0 # timer for debounce
-        self.comannd_state = 1 # im keyer mode
+        self.command_state = 1 # im keyer mode
 #         
 #         self.save_tfreq =  cwt.tonfreq()
 #         self.ton_freq_command = cwt.tonfreq_command()
@@ -172,10 +182,13 @@ class command_button():
         return(self.button.value())
     
     def button_command_off(self):
-        self.comannd_state =  0
-        self.led1(self.comannd_state)
-        self.led2(self.comannd_state)
-        
+        #print("command off")
+        self.command_state =  0
+        self.led1(self.command_state)
+        self.led2(self.command_state)
+        iambic.write_jsondata() # save parameter afer change
+        iambic.char = ""
+        iambic.word = ""
         text2cw("e")
              
         
@@ -188,13 +201,23 @@ class command_button():
         elif self.button.value() == 1 and self.button_save == 0 and utime.ticks_ms() > self.btimer + 10 : #0 0 ->button IS press
              self.button_save = 1
              
-             self.led1(not self.comannd_state)
-             self.comannd_state =  not self.comannd_state
-             if self.comannd_state:
-                     
+             self.led1(not self.command_state)
+             self.led2(not self.command_state)
+             
+             self.command_state =  not self.command_state
+             
+             if self.command_state:
+                     #print("command ",self.command_state)
+                     # in command mode immer ton on 
                      cwt.set2cton()
+                     cwt.onoff(True)
              else :
+                     #print("command ",self.command_state)
                      cwt.set2ton()
+                     cwt.onoff(iambic.sidetone_enable)
+                     cb.button_command_off()
+                     
+                     
                      
             
              text2cw("e")
@@ -282,7 +305,7 @@ m -> request Iambic Mode A/B
 ? -> request value of ...
 
 i -> TX_opt enable(on) disable(off)
-j -> TX_transceiver enable(on) disable(off)
+j -> TX_transceiver HF enable(on) disable(off)
 o -> Sidetone toggle (on) (off)
 
 f -> adjust sidetone frequenz
@@ -351,8 +374,8 @@ qrg:
 #
         self.iambic_mode  = 0x10     # 0 for Iambic A, 1 for Iambic B
         self.wpm = 18 
-        self.tx_enable = 0
-        self.txt_enable = 0
+        self.tx_enable = 0  # tx des OPTO Copler
+        self.txt_enable = 0 # "HF" tx transceiver des PIOC
         self.sidetone_enable = 1
         self.sidetone_freq = 700 #
         self.sidetone_volume = 10 # range 1,100 * 200 -> 2000 #30000 laut
@@ -390,7 +413,7 @@ qrg:
             ujson.dump(self.json_string, outfile)
             
     def read_jsondata(self):
-        print("read json data")
+        #print("read json data")
         with open('json_iambic.json') as json_file:
             self.data = ujson.load(json_file)
 
@@ -407,7 +430,7 @@ qrg:
           
         self.set_data("tx_enamble",self.tx_enable)
         self.set_data("txt_emable",self.txt_enable)
-     
+        #print(self.iambic_data)
         self.write_data2file()
         
     
@@ -448,7 +471,7 @@ qrg:
         #utime.sleep(0.3)
         cb.button_state() ## Comand button abfragen
         
-        if cb.comannd_state == 1 : # "1" ->comand mode
+        if cb.command_state == 1 : # "1" ->comand mode
             
             if self.tune == 1: # begin tune
         
@@ -519,10 +542,12 @@ qrg:
                 if self.dah_key.value() == self.LOW: # transmit on
                     self.wpm = self.wpm+1
                     cw_time.set_wpm(self.wpm)
+                    print("wpm:",self.wpm)
                     play("-")
                 elif self.dit_key.value() == self.LOW: #transmit off
-                    self.wpm = self.wpm+1
+                    self.wpm = self.wpm-1
                     cw_time.set_wpm(self.wpm)
+                    #print("wpm:",self.wpm)
                     play(".")
                 return
             
@@ -537,7 +562,7 @@ qrg:
                     else:
                         self.qrg_marke = self.qrg_marke + 1
                         tx.set_freq(self.f_liste[self.qrg_marke])
-                        print("....",self.f_liste[self.qrg_marke])
+                        #print("....",self.f_liste[self.qrg_marke])
                         play("-")
                         
                 elif self.dit_key.value() == self.LOW: #transmit off
@@ -546,7 +571,7 @@ qrg:
                     else:
                         self.qrg_marke = self.qrg_marke - 1
                         tx.set_freq(self.f_liste[self.qrg_marke])
-                        print("....",self.f_liste[self.qrg_marke])
+                        #print("....",self.f_liste[self.qrg_marke])
                         play(".")
                 return
      
@@ -572,16 +597,16 @@ qrg:
                     #print(utime.ticks_ms(),self.ktimer_end)
                     #print("char",self.char)
                    
-                    if cb.comannd_state == 1: # "1" ->comand mode
+                    if cb.command_state == 1: # "1" ->comand mode
                         Char = decode(self.char)
 # comand mode ----------------                        
                         if  Char == "i" : # TX enable(on) disable(off)
-                            if self.request == 1:
+                            if self.request == 1:  # ? -> request value of ...
                                 if self.tx_enable :
                                     text2cw("on")
                                 else:
                                     text2cw("off")
-                            else:    
+                            else:                  # set / change mode 
                                 self.tx_enable = not self.tx_enable
                                 if self.tx_enable:
                                     txopt.on()
@@ -592,7 +617,7 @@ qrg:
                                 #print("Transmit", self.tx_enable)
                                 cb.button_command_off()
                                 
-                        elif  Char == "j" : # TX opt enable(on) disable(off)
+                        elif  Char == "j" : # HF TX opt enable(on) disable(off)
                             if self.request == 1:
                                 if self.txt_enable :
                                     text2cw("on")
@@ -609,8 +634,9 @@ qrg:
                                 #print("Transmit", self.txt_enable)
                                 cb.button_command_off()
                                 
-                        elif  Char == "o" : # TX enable(on) disable(off)
+                        elif  Char == "o" : # sidetone enable(on) disable(off)
                             if self.request == 1:
+                                #print("CMD-TX:",self.sidetone)
                                 if self.sidetone_enable :
                                     text2cw("on")
                                 else:
@@ -626,15 +652,17 @@ qrg:
                                     text2cw("off")
                                     cwt.onoff(0)
                                     cb.button_command_off()
-                                print("sidetone", self.tx_enable)
+                                #print("sidetone", self.tx_enable)
                                 
-                        elif  Char == "t" : # tune mode 
+                        elif  Char == "t" : # tune mode
+                            #print("CMD-tune:",self.tune)
                             self.tune = 1
                             if self.tune:
                                 text2cw("on")
                                 
                         elif  Char == "w" : # WPM Change Speed ) 
                             if self.request == 1:
+                                #print("CMD-wpm:",self.wpm)
                                 text2cw(str(self.wpm))
                             
                             else:
@@ -795,9 +823,9 @@ def text2cw(str):
 
 comand_button    = 15 
 onboard_led      = 25 
-extern_led       = 3 
+extern_led       = 11 # is in snc with interne  led_onboard
 tx_opt_pin       = 10 
-tx_pin           = 18 
+#tx_pin           = 18 
 
 cw_sound_pin     = 22
 paddle_left_pin  = 17 
@@ -808,7 +836,9 @@ paddle_right_pin = 18
 print("keyer")
 
 # user class 
-tx      = transceiver(tx_pin)
+tx      = transceiver()
+tx.off()
+
 txopt   = tx_opt(tx_opt_pin)
 
 cwt = cw_sound(cw_sound_pin)
