@@ -96,9 +96,9 @@ Setup Hardware pin on rp2040
 ```
 comand_button    = 15 
 onboard_led      = 25 
-extern_led       = 3 
+extern_led       = 11 
 tx_opt_pin       = 10 
-tx_pin           = 18 
+
 
 cw_sound_pin     = 22
 paddle_left_pin  = 17 
