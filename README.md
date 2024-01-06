@@ -1,5 +1,7 @@
 # iambic keyer
 
+* Version 6.1.2024 fix tx_enable json file 
+
 IAMBIC keyer in micropython
 * Iambic Mode A/B
 * command function over keyer 

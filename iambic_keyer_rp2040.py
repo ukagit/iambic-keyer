@@ -1,6 +1,7 @@
- # Iambic keyer rp2040 include simple  transceiver on 40m 
+# Iambic keyer rp2040 include simple  transceiver on 40m 
 #
 # Copyright (C) 2022 dl2dbg
+# update 6.1.2024
 # update 12.3.2023 
 #
 # This program is free software; you can redistribute it and/or
@@ -186,7 +187,7 @@ class command_button():
         self.command_state =  0
         self.led1(self.command_state)
         self.led2(self.command_state)
-        iambic.write_jsondata() # save parameter afer change
+        
         iambic.char = ""
         iambic.word = ""
         text2cw("e")
@@ -428,8 +429,8 @@ qrg:
         self.set_data("sidetone_freq",self.sidetone_freq)
         self.set_data("sidetone_volume",self.sidetone_volume)
           
-        self.set_data("tx_enamble",self.tx_enable)
-        self.set_data("txt_emable",self.txt_enable)
+        self.set_data("tx_enable",self.tx_enable)
+        self.set_data("txt_enable",self.txt_enable)
         #print(self.iambic_data)
         self.write_data2file()
         
@@ -443,8 +444,8 @@ qrg:
         self.sidetone_freq    = self.iambic_data["sidetone_freq"]
         self.sidetone_volume  = self.iambic_data["sidetone_volume"]
         
-        self.tx_enamble = self.iambic_data["tx_enamble"]
-        self.txt_emable = self.iambic_data["txt_emable"]
+        self.tx_enable = self.iambic_data["tx_enable"]
+        self.txt_enable = self.iambic_data["txt_enable"]
         
         # set extern Parameter
         cw_time.set_wpm(self.wpm)
@@ -453,6 +454,13 @@ qrg:
         
         
         cwt.onoff(self.sidetone_enable)
+        
+        if self.tx_enable == 1:
+            txopt.on()
+            
+        else:
+            txopt.off()
+           
         
         
 #---------------         
@@ -513,8 +521,7 @@ qrg:
             elif self.adj_sidetone_volume == 1: # adjust sidetone volume
         
                 self.keyerSate = self.IDLE
-                self.tx_enable = 1
-                tx.on()
+                
                 
                 if self.dah_key.value() == self.LOW: # transmit on
                     if self.sidetone_volume >= 100:
@@ -602,13 +609,13 @@ qrg:
 # comand mode ----------------                        
                         if  Char == "i" : # TX enable(on) disable(off)
                             if self.request == 1:  # ? -> request value of ...
-                                if self.tx_enable :
+                                if self.tx_enable == 1:
                                     text2cw("on")
                                 else:
                                     text2cw("off")
                             else:                  # set / change mode 
-                                self.tx_enable = not self.tx_enable
-                                if self.tx_enable:
+                                self.tx_enable = 1 - self.tx_enable
+                                if self.tx_enable == 1:
                                     txopt.on()
                                     text2cw("on")
                                 else:
@@ -705,10 +712,9 @@ qrg:
                                 self.iambic_mode  = 0 #  0x10     # 0 for Iambic A, 1 for Iambic B
                                 cb.button_command_off()
                                 
-                                self.write_jsondata() # save parameter afer change
-                                
-                        elif  Char == "s" : # adjust sidetone frequenz                            
-                                self.write_jsondata() # save parameter afer change
+                            
+                        elif  Char == "s" :      # save parameter afer change                  
+                                self.write_jsondata() 
                                 text2cw("save")
                                 cb.button_command_off()
                         
